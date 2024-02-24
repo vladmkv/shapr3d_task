@@ -7,3 +7,8 @@ TEST(MeshTests, DummyTest)
     auto mesh = geomio::Mesh{};
 	ASSERT_TRUE(true);
 }
+
+TEST(MeshTests, BrokenTest)
+{
+    ASSERT_TRUE(false);
+}
