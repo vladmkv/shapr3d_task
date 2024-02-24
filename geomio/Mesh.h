@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/vec3.hpp>
+
 #include <vector>
 
 namespace geomio
@@ -7,7 +9,7 @@ namespace geomio
 
 class Mesh
 {
-	std::vector<float> buf_;
+	std::vector<glm::vec3> vertices_;
 };
 
 }
