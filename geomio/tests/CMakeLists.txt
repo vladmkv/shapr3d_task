@@ -11,7 +11,10 @@ FetchContent_MakeAvailable(googletest)
 add_library(GTest::GTest INTERFACE IMPORTED)
 target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
-add_executable(tests "Mesh_test.cpp")
+add_executable(tests
+	Mesh_test.cpp
+	ObjMeshImporter_test.cpp
+)
 
 target_link_libraries(tests
  PRIVATE
