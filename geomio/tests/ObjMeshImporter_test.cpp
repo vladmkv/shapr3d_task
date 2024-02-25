@@ -29,6 +29,24 @@ std::string makeCube()
 	return objStream.str();
 }
 
+std::string makeTexturedTriangleWithNormals()
+{
+	std::stringstream objStream;
+	objStream <<		
+		"v 0.000000 0.000000 0.000000\n"
+		"v 2.000000 0.000000 0.000000\n"
+		"v 2.000000 2.000000 0.000000\n"
+		"vn 0.000000 0.000000 1.000000\n"
+		"vn 0.000000 0.000000 1.000000\n"
+		"vn 0.000000 0.000000 1.000000\n"
+		"vt 0.0 0.0 [0]\n"
+		"vt 0.0 1.0 [0]\n"
+		"vt 1.0 1.0 [0]\n"
+		"f 1/1/1 2/2/3 3/3/3\n";
+
+	return objStream.str();
+}
+
 TEST(ObjMeshImporterTests, ImportCube)
 {
 	auto meshImporter = ObjMeshImporter{};
@@ -39,4 +57,17 @@ TEST(ObjMeshImporterTests, ImportCube)
 
 	auto mesh{ meshImporter.getMesh() };
 	ASSERT_TRUE(mesh.vertices().size() == 8); // unique vertices in a cube
+}
+
+TEST(ObjMeshImporterTests, ImportTriangle)
+{
+	auto meshImporter = ObjMeshImporter{};
+	ASSERT_TRUE(meshImporter.load(makeTexturedTriangleWithNormals()));
+
+	auto message{ meshImporter.getMessage() };
+	ASSERT_TRUE(message.empty());
+
+	auto mesh{ meshImporter.getMesh() };
+	ASSERT_TRUE(mesh.vertices().size() == 3); // unique vertices in a cube
+	ASSERT_TRUE(mesh.normals().size() == 3); // unique vertices in a cube
 }

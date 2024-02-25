@@ -20,7 +20,9 @@ public:
 
 	Mesh(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<Face> faces);
 
-	const std::vector<glm::vec3>& vertices() const;
+	const std::vector<glm::vec3>& vertices() const { return vertices_; }
+	const std::vector<glm::vec3>& normals() const { return normals_; }
+	const std::vector<Face>& faces() const { return faces_; }
 
 private:
 	std::vector<glm::vec3> vertices_;
