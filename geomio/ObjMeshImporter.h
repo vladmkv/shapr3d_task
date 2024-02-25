@@ -10,11 +10,13 @@ namespace geomio
 class ObjMeshImporter
 {
 public:
-	bool load(const std::string& text);
+	bool load(const std::string& text);	
 	Mesh getMesh() const;
 	std::string getMessage() const;
 
-private:	
+private:
+	static std::vector<glm::vec3> readAttribute(const std::vector<tinyobj::real_t>& attrib);
+
 	tinyobj::ObjReader reader_;
 	std::string message_;
 };

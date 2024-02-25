@@ -38,5 +38,5 @@ TEST(ObjMeshImporterTests, ImportCube)
 	ASSERT_TRUE(message.empty());
 
 	auto mesh{ meshImporter.getMesh() };
-	ASSERT_TRUE(mesh.vertices().size() == 24); // 6 faces * 4 vertices
+	ASSERT_TRUE(mesh.vertices().size() == 8); // unique vertices in a cube
 }
