@@ -2,32 +2,11 @@
 
 #include <tiny_obj_loader.h>
 
-#include <iostream>
 #include <cassert>
 
 
 namespace geomio
 {
-
-bool ObjMeshImporter::load(const std::filesystem::path& file)
-{
-	std::string inputfile = file.string();
-	tinyobj::ObjReaderConfig reader_config;
-	reader_config.mtl_search_path = "./"; // Path to material files
-
-	if (!reader_.ParseFromFile(inputfile, reader_config)) {
-		if (!reader_.Error().empty()) {
-			std::cerr << "TinyObjReader: " << reader_.Error();
-		}
-		exit(1);
-	}
-
-	if (!reader_.Warning().empty()) {
-		std::cout << "TinyObjReader: " << reader_.Warning();
-	}
-
-	return reader_.Valid();
-}
 
 bool ObjMeshImporter::load(const std::string& text)
 {
@@ -35,18 +14,7 @@ bool ObjMeshImporter::load(const std::string& text)
 	reader_config.triangulate = false;
 	reader_config.vertex_color = false;
 
-	if (!reader_.ParseFromString(text, {}, reader_config)) {
-		if (!reader_.Error().empty()) {
-			std::cerr << "TinyObjReader: " << reader_.Error();
-		}
-		exit(1);
-	}
-
-	if (!reader_.Warning().empty()) {
-		std::cout << "TinyObjReader: " << reader_.Warning();
-	}
-
-	return reader_.Valid();
+	return reader_.ParseFromString(text, {}, reader_config) ? reader_.Valid() : false;
 }
 
 // Original sample code: https://github.com/tinyobjloader/tinyobjloader/tree/release#example-code-new-object-oriented-api
