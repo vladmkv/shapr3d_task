@@ -15,6 +15,7 @@ add_executable(tests
 	Mesh_test.cpp
 	MeshTriangulator_test.cpp
 	ObjMeshImporter_test.cpp
+	StlMeshExporter_test.cpp
 	TestUtils.h
 )
 

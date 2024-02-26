@@ -11,11 +11,12 @@ Implemented so far:
 - Mesh storage
 - Shell face triangulation
 - Import from OBJ string
+- Face normals from face plane
+- Export to STL binary stream
 
 TODO:
-- Calculate triangle normals
-- Export to STL
 - Read OBJ from disk
+- Write STL to disk
 - Advanced triangulation
 
 Third-party components:

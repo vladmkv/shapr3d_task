@@ -30,6 +30,11 @@ public:
 		return vertices_[face.vertexIndices[index]];
 	}
 
+	glm::vec3 vertex(size_t faceIndex, size_t vertexIndex) const
+	{
+		return vertices_[faces_[faceIndex].vertexIndices[vertexIndex]];
+	}
+
 	glm::vec3 faceNormal(const Face& face) const
 	{
 		const glm::vec3 a{ vertex(face, 0) - vertex(face, 1) };

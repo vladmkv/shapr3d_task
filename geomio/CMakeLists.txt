@@ -2,7 +2,8 @@ add_library(geomio
 	Mesh.h Mesh.cpp
 	MeshImporter.h
 	MeshTriangulator.h MeshTriangulator.cpp
-	ObjMeshImporter.h ObjMeshImporter.cpp)
+	ObjMeshImporter.h ObjMeshImporter.cpp
+	StlMeshExporter.h StlMeshExporter.cpp)
 
 target_include_directories(geomio PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

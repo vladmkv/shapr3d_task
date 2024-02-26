@@ -60,4 +60,13 @@ inline Mesh makeCubeMesh()
 	return meshImporter.getMesh();
 }
 
+inline Mesh makeTriangleMesh()
+{
+	return {
+	{{0, 0, 0}, {1, 0, 0}, {0, 1, 0}},
+	{{0, 0, 1}},
+	{{ { 0, 1, 2 }, { 0, 0, 0 } } }
+	};
+}
+
 };
