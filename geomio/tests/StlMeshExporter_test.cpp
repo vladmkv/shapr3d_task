@@ -3,55 +3,76 @@
 
 #include <algorithm>
 #include <array>
+#include <cstdint>
 
 #include <gtest/gtest.h>
 
 using namespace geomio;
 
-void verifyBytesContain(std::vector<char>::iterator& it, glm::vec3 vec)
+namespace export_test
 {
-	std::array<float, 3> coordinates{};
-	const auto byteCount = sizeof(float) * 3;
-	std::copy_n(it, byteCount, reinterpret_cast<char*>(coordinates.data()));
-	ASSERT_EQ(coordinates[0], vec.x);
-	ASSERT_EQ(coordinates[1], vec.y);
-	ASSERT_EQ(coordinates[2], vec.z);
-	it += byteCount;
+
+void verifyVec3(std::istream& stream, glm::vec3 vec)
+{
+	float x, y, z;
+	ASSERT_TRUE(read(stream, x));
+	ASSERT_TRUE(read(stream, y));
+	ASSERT_TRUE(read(stream, z));
+	ASSERT_EQ(x, vec.x);
+	ASSERT_EQ(y, vec.y);
+	ASSERT_EQ(z, vec.z);
 }
 
 TEST(StlMeshExporterTests, TriangleExport)
 {
-	std::ostringstream stream{};
+	std::stringstream stream{};
 	const auto mesh = test_utils::makeTriangleMesh();
 
 	StlMeshExporter::save(mesh, stream);
-	const auto str{ stream.str() };
-	ASSERT_FALSE(str.empty());
-
-	std::vector<char> byteVec{};
-	std::copy_n(str.data(), str.size(), std::back_inserter(byteVec));
+	stream.seekg(0);
 
 	// Header
 	const size_t headerSize{ 80 };
-	ASSERT_TRUE(std::all_of(byteVec.begin(), byteVec.begin() + headerSize, [](auto byteVal) { return byteVal == 0; }));
+	char b;
+
+	for (auto i = 0; i < headerSize; ++i)
+	{
+		ASSERT_TRUE(read(stream, b));
+		ASSERT_EQ(b, 0);
+	}
 
 	// Number of triangles
-	auto it{ byteVec.begin() + headerSize };
-	const auto triangleCount{ *reinterpret_cast<uint32_t*>(&(*it)) };
+	int32_t triangleCount;
+	ASSERT_TRUE(read(stream, triangleCount));
 	ASSERT_TRUE(triangleCount == 1);
 
 	// Normal vector
-	it += sizeof(uint32_t);
-	const auto& meshNormal{ mesh.faceNormal(mesh.faces()[0]) };
-	verifyBytesContain(it, meshNormal);
+	const auto& faceNormal{ mesh.faceNormal(mesh.faces()[0]) };
+	verifyVec3(stream, faceNormal);
 
 	// Vertices
 	for(int i = 0; i < 3; ++i)
 	{
-		verifyBytesContain(it, mesh.vertex(0, i));
+		const auto& vertex{ mesh.vertex(0, i)};
+		verifyVec3(stream, vertex);
 	}
 
 	// Attribute byte count -- must be 0
-	const auto byteCount{ *reinterpret_cast<uint16_t*>(&(*it)) };
+	uint16_t byteCount;
+	read(stream, byteCount);
 	ASSERT_TRUE(byteCount == 0);
+}
+
+TEST(StlMeshExporterTests, StreamIoTest)
+{
+	std::stringstream stream{};
+	const std::array<float, 3> a{ 1.0, 2.0, 3.0 };
+
+	ASSERT_TRUE(write(stream, a));
+
+	stream.seekg(0);
+
+	verifyVec3(stream, { 1.0, 2.0, 3.0 });
+}
+
 }
