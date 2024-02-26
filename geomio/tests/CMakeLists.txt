@@ -13,7 +13,9 @@ target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
 add_executable(tests
 	Mesh_test.cpp
+	MeshTriangulator_test.cpp
 	ObjMeshImporter_test.cpp
+	TestUtils.h
 )
 
 target_link_libraries(tests
