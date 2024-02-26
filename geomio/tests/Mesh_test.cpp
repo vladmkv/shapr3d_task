@@ -13,4 +13,5 @@ TEST(MeshTests, CreateTriangle)
 	ASSERT_TRUE(mesh.vertices().size() == 3);
 	ASSERT_TRUE(mesh.normals().size() == 1);
 	ASSERT_TRUE(mesh.faces().size() == 1);
+	ASSERT_TRUE(mesh.faceNormal(mesh.faces()[0]) == glm::vec3(0, 0, 1));
 }

@@ -2,6 +2,7 @@
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 
 #include <vector>
 
@@ -23,6 +24,18 @@ public:
 	const std::vector<glm::vec3>& vertices() const { return vertices_; }
 	const std::vector<glm::vec3>& normals() const { return normals_; }
 	const std::vector<Face>& faces() const { return faces_; }
+
+	glm::vec3 vertex(const Face& face, size_t index) const
+	{
+		return vertices_[face.vertexIndices[index]];
+	}
+
+	glm::vec3 faceNormal(const Face& face) const
+	{
+		const glm::vec3 a{ vertex(face, 0) - vertex(face, 1) };
+		const glm::vec3 b{ vertex(face, 0) - vertex(face, 2) };
+		return glm::normalize(glm::cross(a, b));
+	}
 
 private:
 	std::vector<glm::vec3> vertices_;
