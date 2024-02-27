@@ -4,22 +4,43 @@
 
 Features:
 - Cross-platform C++17 code
-- Unit-tests based on gtest
+- Unit-tests covering core functionality based on gtest
 - CMake build system
 
 Implemented so far:
+- Import from OBJ
 - Mesh storage
 - Shell face triangulation
-- Import from OBJ string
-- Face normals from face plane
-- Export to STL binary stream
+- Calculate face normals from face plane
+- Export to STL
 
 TODO:
-- Read OBJ from disk
-- Write STL to disk
 - Advanced triangulation
 
 Third-party components:
 - tinyobjloader for OBJ file parsing
 - glm for geometry classes
 - gtest
+
+## Build instructions
+CMake and C++ compiler are required. Tested with g++, clang and msvc.
+
+Clone the repository including submodules: `$ git clone --recurse-submodules https://github.com/vladmkv/shapr3d_task.git`
+
+Configure CMake project:
+```
+cd shapr3d_task
+mkdir build
+cd build
+cmake -S .. -B.
+```
+
+Build CMake project: `cmake --build .`
+
+Run CTest unit-tests: `ctest`
+
+## Usage
+```
+cd build/app/Debug
+app.exe ../../../geomio/tests/resources/box.obj box.stl
+```
