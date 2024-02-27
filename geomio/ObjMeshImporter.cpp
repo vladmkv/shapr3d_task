@@ -49,25 +49,24 @@ Mesh ObjMeshImporter::getMesh() const
 	auto& attrib = reader_.GetAttrib();
 	auto& shapes = reader_.GetShapes();
 	
-	assert(shapes.size() == 1);
-
 	auto vertices{ readAttribute(attrib.vertices) };
 	auto normals{ readAttribute(attrib.normals) };
 	
-	// Process only first shape
-	const auto& shape{ shapes[0] };
-	size_t index_offset = 0;
 	std::vector<Mesh::Face> faces;
-	for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
-		Mesh::Face face;
-		// Loop over vertices in the face.
-		auto fv = static_cast<size_t>(shape.mesh.num_face_vertices[f]);
-		for (size_t v = 0; v < fv; v++) {
-			face.vertexIndices.push_back(shape.mesh.indices[index_offset + v].vertex_index);
-			face.normalIndices.push_back(shape.mesh.indices[index_offset + v].normal_index);
+	for (const auto& shape : shapes)
+	{
+		size_t index_offset = 0;
+		for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
+			Mesh::Face face;
+			// Loop over vertices in the face.
+			auto fv = static_cast<size_t>(shape.mesh.num_face_vertices[f]);
+			for (size_t v = 0; v < fv; v++) {
+				face.vertexIndices.push_back(shape.mesh.indices[index_offset + v].vertex_index);
+				face.normalIndices.push_back(shape.mesh.indices[index_offset + v].normal_index);
+			}
+			index_offset += fv;
+			faces.push_back(std::move(face));
 		}
-		index_offset += fv;
-		faces.push_back(std::move(face));
 	}
 
 	return Mesh{std::move(vertices), std::move(normals), std::move(faces)};
