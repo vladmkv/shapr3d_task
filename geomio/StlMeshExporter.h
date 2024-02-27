@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "Mesh.h"
 
 #include <istream>
@@ -42,8 +44,7 @@ class StlMeshExporter
 {
 public:
 	static void save(const Mesh& mesh, std::ostream& stream);
-	void saveToFile(const Mesh& mesh);
-	void saveToBuffer(const Mesh& mesh);
+	static void saveToFile(const Mesh& mesh, const std::filesystem::path& filePath);
 };
 
 }

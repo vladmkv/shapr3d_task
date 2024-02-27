@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "Mesh.h"
 
 #include <tiny_obj_loader.h>
@@ -10,6 +12,7 @@ namespace geomio
 class ObjMeshImporter
 {
 public:
+	bool loadFromFile(const std::filesystem::path& filePath);
 	bool load(const std::string& text);	
 	Mesh getMesh() const;
 	std::string getMessage() const;

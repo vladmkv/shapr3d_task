@@ -4,10 +4,20 @@
 #include <tiny_obj_loader.h>
 
 #include <cassert>
+#include <filesystem>
 
 
 namespace geomio
 {
+
+bool ObjMeshImporter::loadFromFile(const std::filesystem::path& filePath)
+{
+	tinyobj::ObjReaderConfig reader_config{};
+	reader_config.triangulate = false;
+	reader_config.vertex_color = false;
+
+	return reader_.ParseFromFile(filePath.string(), reader_config) ? reader_.Valid() : false;
+}
 
 bool ObjMeshImporter::load(const std::string& text)
 {

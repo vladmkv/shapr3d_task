@@ -1,26 +1,20 @@
 #include "StlMeshExporter.h"
 
 #include <array>
+#include <filesystem>
 #include <fstream>
 #include <ostream>
-#include <sstream>
 
 #include "Mesh.h"
 
 namespace geomio
 {
 
-void StlMeshExporter::saveToFile(const Mesh& mesh)
+void StlMeshExporter::saveToFile(const Mesh& mesh, const std::filesystem::path& filePath)
 {
 	std::ofstream fileStream;
-	fileStream.open("file.bin", std::ios::binary | std::ios::out);
+	fileStream.open(filePath.string(), std::ios::binary | std::ios::out);
 	save(mesh, fileStream);
-}
-
-void StlMeshExporter::saveToBuffer(const Mesh& mesh)
-{
-	std::ostringstream bufferStream;
-	save(mesh, bufferStream);
 }
 
 void StlMeshExporter::save(const Mesh& mesh, std::ostream& stream)
